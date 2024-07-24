@@ -1,0 +1,67 @@
+﻿@model MyFriends.Models.Friend
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@("פרטי החבר המהולל "+Model.FullName)</h1>
+
+<div>
+    <h4>@Model.FirstName</h4>
+    <hr />
+    <dl class="row">
+       
+        
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmailAddress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        @if(Model.Images.Count()>0)
+            foreach (Image image in Model.Images)
+                if(image.MyImage!=null)
+                {
+                    <dt class="col-sm-2">
+                        תמונה
+                    </dt>
+                    <dd class="col-sm-10">
+                        <img src="data:image;base64,
+                                @System.Convert.ToBase64String(image.MyImage)" width="80" height="60" />
+                    </dd>
+                }
+    </dl>
+</div>
+<hr/>
+<button onclick="addImage()">הוסף תמונה</button>
+<div id="AddImage" style="display:none">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddImage" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input asp-for="ID" hidden="hidden" /> 
+
+                <div class="form-group">
+                    <label asp-for="SetImage" class="control-label"></label>
+                    <input type="file" asp-for="SetImage" class="form-control" />
+                    <span asp-validation-for="SetImage" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="הוספה" class="btn btn-primary" />
+                </div>
+            </form>
+</div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
